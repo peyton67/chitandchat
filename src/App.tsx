@@ -10,19 +10,33 @@ import {
   Avatar,
   Badge,
 } from "@chakra-ui/react";
-import tweetsData from "./data/tweets.json";
+import { supabase } from "./utils/supabase";
 import type { Tweet } from "./types/tweet";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   // Tweets is the current list of tweets shown
   // setTweets is how React updates whats shown
   // We start with tweets from our json file
-  const [tweets, setTweets] = useState<Tweet[]>(tweetsData as Tweet[])
+  const [tweets, setTweets] = useState<Tweet[]>([]);
 
   // input is what is currently typed in the box
   // setInput is how React knows about newly typed data
   const [input, setInput] = useState("");
+
+useEffect(() => {
+  async function load() {
+    const { data, error } = await supabase
+      .from("tweets")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) console.error(error);
+    else setTweets(data || []);
+  }
+
+  load();
+}, []);
 
   // This function runs when we click the yap button
   const handleYapClick = () => {
@@ -30,7 +44,7 @@ function App() {
     if(!input.trim()) return;
     const newTweet: Tweet ={
       id: Date.now(),
-      name: "JoeSmoe",
+      name: "peyton2auraful",
       username: "@you",
       createdAt: new Date().toISOString(),
       text: input.trim(),
