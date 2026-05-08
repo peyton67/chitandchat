@@ -11,7 +11,7 @@ import {
   Badge,
 } from "@chakra-ui/react";
 import { supabase } from "./utils/supabase";
-import type { Tweet } from "./types/tweet";
+import type { Tweet } from "./types/Tweet";
 import { useEffect, useState } from "react";
 
 function App() {
